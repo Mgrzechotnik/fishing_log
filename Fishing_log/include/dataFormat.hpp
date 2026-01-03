@@ -9,9 +9,9 @@ bool leapYear(const int& year){
 }
 
 bool dataFormat(const std::string& date){
-    std::ifstream jsonInput("./logs/test.json");
+    std::ifstream jsonInput("./logs/your_log.json");
     if (!jsonInput.is_open()) {
-        std::cerr << "Error: Could not open fishList.json" << std::endl;
+        std::cerr << "Error: Could not open your_log.json" << std::endl;
         return "unknown";
     }
     nlohmann::json jsonData = nlohmann::json::parse(jsonInput);

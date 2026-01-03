@@ -26,7 +26,7 @@ public:
     friend void to_json(nlohmann::json& j, const Log& l) {
         j = nlohmann::json{
             {"date", l.m_date},
-            {"open log hour", l.m_hour},
+            {"open_log_hour", l.m_hour},
             {"place", l.m_place},
             {"weather", l.m_weather}
             };

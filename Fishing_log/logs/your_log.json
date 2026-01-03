@@ -1,0 +1,21 @@
+{
+    "log": {
+        "01-01-2026": {
+            "date": "01-01-2026",
+            "fishes": [
+                {
+                    "hour": 14,
+                    "id": 27464,
+                    "length": 75.0,
+                    "lure": "relax kopyto",
+                    "name": "zander",
+                    "type": "Predator",
+                    "weight": 3.5
+                }
+            ],
+            "open_log_hour": 15,
+            "place": "bagry",
+            "weather": "sunny"
+        }
+    }
+}
