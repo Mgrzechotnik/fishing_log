@@ -7,4 +7,4 @@ Show your records and history of all your logs
 
 
 
-dorobic validacje wyboru, komentarze, sprawko
+
