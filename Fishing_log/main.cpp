@@ -8,7 +8,7 @@ int main(){
 
     while(true){
         manager.showMenu();
-        std::cin >> selected;
+        selected = manager.checkInput<int>("Enter option: ");
 
         switch(selected){
             case 1: manager.createNewLog(); break;
@@ -16,12 +16,14 @@ int main(){
             case 3: manager.deleteLog(); break;
             case 4: manager.recordsLog(); break;
             case 5: manager.historyLog(); break;
-            default: std::cout << "Invalid option";
-        }
+            default: std::cout << "Invalid option" << std::endl;
+        
+    }
     }
 
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cin.get();
 
     return 0;
+    
 }

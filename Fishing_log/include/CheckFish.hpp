@@ -21,7 +21,7 @@ std::string checkName(const std::string& name){
     for (auto it = jsonData.begin(); it != jsonData.end(); it++){
         for(auto &fish : it.value()){
             if (sname == fish){
-                std::cout << "Fish exist" << std::endl;
+                //std::cout << "Fish exist" << std::endl;
                 return sname;
             }
         }
@@ -45,7 +45,7 @@ std::string checkType(const std::string& name){
     for (auto it = jsonData.begin(); it != jsonData.end(); it ++){
         for(auto& fish : it.value()){
             if(name == fish){
-                std::cout << "Category exists" << std::endl;
+                //std::cout << "Category exists" << std::endl;
                 return it.key();
             }
         }

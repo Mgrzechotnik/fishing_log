@@ -29,9 +29,16 @@ bool dataFormat(const std::string& date){
             return false;
             std::cout << "Days, months, years must be separated by '-' " << std::endl;
         }
-        int d = std::stoi(date.substr(0,2));
-        int m = std::stoi(date.substr(3,2));
-        int y = std::stoi(date.substr(6,4));
+
+        int d, m, y;
+        try{
+            d = std::stoi(date.substr(0,2));
+            m = std::stoi(date.substr(3,2));
+            y = std::stoi(date.substr(6,4));
+        } catch(...){
+            std::cout << "Data must contain only numbers and '-' " <<std::endl;
+            return false; 
+        }
 
         if(y < 2026 || y > 2050){
             std::cout << "Please enter real year not 1800s or 2100s" << std::endl;

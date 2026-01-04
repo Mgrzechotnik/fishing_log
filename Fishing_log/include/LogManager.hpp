@@ -55,13 +55,44 @@ public:
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
 
-    bool isInt(){
-        
-    } 
+    template <typename T>
+    T checkInput(const std::string& input){
+        T value;
+        while(true){
+            std::cout << input;
+            if(std::cin >> value){
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                return value;
+            } else{
+                std::cout << "Invalid data input" << std::endl;
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            }
+        }
+    }
+
+    template <typename T>
+    T checkValue(std::string& input, bool& accept){
+        std::istringstream ss(input);
+        T value;
+        if( ss >> value && ss.eof()){
+            accept = true;
+            return value;
+        } else{
+            accept = false;
+            return T();
+        }
+    }
+
+    
+    
 
     void createNewLog(){
+
         int start_hour;
         std::string date, place, weather;
+
+        while(true){
 
         system("cls");
         std::cout << "Creating a new Log: " << std::endl;
@@ -69,25 +100,39 @@ public:
         std::cin >> date;
 
         if(!dataFormat(date)){
-            return;
+                std::cout << "To continue please press enter" << std::endl;
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.get();
+                continue;
         }
 
-        std::cout << "Enter the fishing start hour: ";
-        std::cin >> start_hour;
+        start_hour = checkInput<int>("Enter start hour: ");
+        if(start_hour < 0 || start_hour > 23){
+            std::cout << "Invalid hour, must be 0 to 23 number" << std::endl;
+            std::cout << "To continue please press enter" << std::endl;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.get();
+            continue;
+        }
         std::cout << "Enter place: ";
         std::getline(std::cin >> std::ws, place);
         std::cout << "Enter weather: ";
         std::getline(std::cin >> std::ws, weather);
 
-        hk::Log wpis(date, start_hour, place, weather);
+        hk::Log new_log(date, start_hour, place, weather);
        
-        std::string dateKey = wpis.getDate();
-        m_jsonData["log"][dateKey] = wpis;
+        std::string dateKey = new_log.getDate();
+        m_jsonData["log"][dateKey] = new_log;
         m_jsonData["log"][dateKey]["fishes"] = nlohmann::json::array();
-        
+    
         save();
-
         std::cout << "Data saved to file." << std::endl;
+        std::cout << "To continue please press enter" << std::endl;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        system("cls");
+        break;
+        
+    }
    
     }
 
@@ -129,7 +174,7 @@ public:
                     system("cls");
 
                     std::cout << "Changing parameters of log date: " << date << std::endl;
-                    std::cout << "Current open log hour is: " << m_jsonData["log"][date]["open log hour"] << std::endl;
+                    std::cout << "Current open_log_hour is: " << m_jsonData["log"][date]["open_log_hour"] << std::endl;
                     std::cout << "Current place is: " << m_jsonData["log"][date]["place"] <<std::endl;
                     std::cout << "Current weather is: " << m_jsonData["log"][date]["weather"] << std::endl << std::endl;
                     std::cout <<"To change parameter type parameter,new_value: " <<std::endl;
@@ -139,7 +184,7 @@ public:
                     std::getline(std::cin >> std::ws, newSet);
 
                     if (newSet == "exit"){
-                        std::cout << "Finished editing fishes" << std::endl;
+                        std::cout << "Finished editing log" << std::endl;
                         break;
                     }
 
@@ -160,12 +205,24 @@ public:
                     }
 
                     else if(newParam == "open_log_hour"){
-                        if (std::stoi(newValue) >=0 && std::stoi(newValue) <24){
-                            m_jsonData["log"][date]["open log hour"] = std::stoi(newValue);
-                            std::cout << "Hour updated" <<std::endl;
+                        bool success = false;
+                        int newHour = checkValue<int>(newValue, success);
+                        
+                        if(!success){
+                            std::cout << "Your: " << newValue << " isnt a number" << std::endl;
+                            std::cout << "To continue please press enter" << std::endl;
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            continue;
+                        } else if(newHour < 0 || newHour > 23){
+
+                            std::cout << "Invalid hour, must be 0 to 23 number" << std::endl;
+                            std::cout << "To continue please press enter" << std::endl;
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            std::cin.get();
+                            continue;
+                         
                         } else {
-                            std::cout << "Hour must be value of 0 to 23" << std::endl;
-                            break;
+                            m_jsonData["log"][date]["open_log_hour"] = newHour;
                         }
                     } else {
                         std::cout << "Invalid option" << std::endl;
@@ -173,6 +230,10 @@ public:
                     }
                 }
                     save();
+                    std::cout << "Hour updated" <<std::endl;
+                    std::cout << "To continue please press enter" << std::endl;
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cin.get();
                     break;
                 }
                 
@@ -182,6 +243,7 @@ public:
                     std::string name;
                     double weight, length;
                     std::string lure;
+                    std::string bait;
                     std::string gb;
 
                     while(true){
@@ -200,31 +262,30 @@ public:
                             break;
                         }
 
-                        std::cout <<"Enter weight: ";
-                        std::cin >> weight;
-                        std::cout << "Enter length: ";
-                        std::cin >> length;
-                        std::cout << "Enter hour: ";
-                        std::cin >> hour;
+                        weight = checkInput<double>("Enter weight: ");
+                        length = checkInput<double>("Enter length: ");
+                        hour = checkInput<double>("Enter hour: ");
 
                         if(hour < m_jsonData["log"][date]["open_log_hour"]){
                             std::cout << "Its illegal to write fish before start fishing" << std::endl;
-                            break;
+                            std::cout << "Press enter to continue" << std::endl;
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            continue;
                         }
 
                         hk::FishBase fish(name);
 
                         if(fish.getType() == "Predator"){
-                            std::cout << "Enter lure";
+                            std::cout << "Enter lure: ";
                             std::getline(std::cin >> std::ws, lure);
                             hk::Predator predator(hour, name, length, weight, lure);
                             m_jsonData["log"][date]["fishes"].push_back(predator);
                         } else {
-                            std::cout << "Enter lure";
-                            std::getline(std::cin >> std::ws, lure);
-                            std::cout << "enter groundbait";
+                            std::cout << "Enter bait: ";
+                            std::getline(std::cin >> std::ws, bait);
+                            std::cout << "Enter ground bait: ";
                             std::getline(std::cin >> std::ws, gb);
-                            hk::CoarseFish coarse(name,length,weight,hour,lure,gb);
+                            hk::CoarseFish coarse(name,length,weight,hour,bait,gb);
                             m_jsonData["log"][date]["fishes"].push_back(coarse);
                         }
                         }
@@ -244,12 +305,18 @@ public:
                     
                     system("cls");
 
+                    std::cin.clear();
+
                     std::cout << "Fishes catched at: " << date << std::endl;
 
                     auto& fishArray = m_jsonData["log"][date]["fishes"];
 
                     if(fishArray.empty()){
                         std::cout << "There arent fishes for this day" << std::endl;
+                        std::cout << "Press enter to continue" << std::endl;
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        std::cin.get();
+                        break;
                     } else {
                         for ( const auto& fish : fishArray){
                             std::cout << "ID: " << fish.value("id", 0)  << " | species: " << fish.value("name","unknown") << ", length: " << fish.value("length", 0.0) << " cm " << " ,weight: " << fish.value("weight", 0.0);
@@ -259,6 +326,8 @@ public:
 
                     std::cout << "Enter ID of fish to edit: " << std::endl;
                     std::cin >> id;
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
 
                     while(true){
 
@@ -272,10 +341,11 @@ public:
                         }
                     }
                     std::cout << std::endl;
+                    std::cout << "You cant edit: id and name. To do this please delete fish and create new " << std::endl;
                     std::cout <<"To change parameter type parameter,new_value: " <<std::endl;
                     std::cout << "For example to set new weight: weight,10" << std::endl;
                     std::cout << "To exit type exit" << std::endl;
-                    std::cin >> newSet;
+                    std::getline(std::cin, newSet);
 
                     if (newSet == "exit"){
                         std::cout << "Finished editing fishes" << std::endl;
@@ -287,30 +357,70 @@ public:
                     if(std::getline(ss,newParam, ',')){
                         std::getline(ss,newValue);
                     }
-                    std::cout << newParam << std::endl;
-                    std::cout << newValue << std::endl;
 
                     for( auto& fish : fishArray){
                         if(fish.value("id",0) == id){
                             if(newParam == "weight" || newParam == "length"){
-                                fish[newParam] = std::stod(newValue);
-                            }
-                        }
-                        if(newParam == "hour"){
-                            if(!(std::stoi(newValue) >= 0 && std::stoi(newValue) <24)){
-                                std::cout << "Hour must be 0 to 23 value" << std::endl;
+                                bool success = false;
+                                double dnewValue = checkValue<double>(newValue,success);
+                                if(!success){
+                                std::cout << "Your: " << newValue << " isnt a number" << std::endl;
+                                std::cout << "To continue please press enter" << std::endl;
+                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                std::cin.get();
                                 continue;
+                                } else {
+                                    if(dnewValue > 0){
+                                        fish[newParam] = dnewValue;
+                                        std::cout << newParam << " uptadated" << std::endl;
+                                    } else {
+                                        std::cout << newParam << " cant be less than zero " << std::endl;
+                                        std::cout << "To continue please press enter" << std::endl;
+                                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                        std::cin.get();
+                                        continue;
+                                    }
+                                }
                             }
-                            fish[newParam] = std::stoi(newValue);
-                        }
-                        if(newParam == "lure"){
-                            fish[newParam] = newValue;
-                        }
-                        if(fish.value("type","unknown") == "Coarse_Fish"){
-                            if(newParam == "ground_bait"){
-                                fish[newParam] = newValue;
+                        
+                            else if(newParam == "hour"){
+                                bool success = false;
+                                int newHour = checkValue<int>(newValue, success);
+
+                                if(!success){
+                                    std::cout << "Your: " << newValue << " isnt a number" << std::endl;
+                                    std::cout << "To continue please press enter" << std::endl;
+                                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                    std::cin.get();
+                                    continue;
+                                } else{
+
+                                    if (newHour >=0 && newHour <24){
+                                        fish[newParam] = newHour;
+                                        std::cout << "Hour updated" <<std::endl;
+                                    } else {
+                                        std::cout << "Hour must be value of 0 to 23" << std::endl;
+                                        std::cout << "To continue please press enter" << std::endl;
+                                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                        std::cin.get();
+                                        continue;
+                                    }
+                                }
                             }
-                        }
+                            else if(fish.value("type","unknown") == "Predator"){
+                                if(newParam == "lure"){
+                                    fish[newParam] = newValue;
+                                }
+                            }
+                            else if(fish.value("type","unknown") == "Coarse_Fish"){
+                                if(newParam == "ground_bait"){
+                                    fish[newParam] = newValue;
+                                }
+                                if(newParam == "bait"){
+                                    fish[newParam] = newValue;
+                                }
+                            }
+                        } 
                     }
                     }
                     save();
@@ -392,6 +502,7 @@ public:
                 }
                 default: break;
             }
+            system("cls");
         } else {
             std::cout << "Log doesnt exist" << std::endl;
         }
@@ -513,12 +624,12 @@ void recordsLog(){
     std::cout << "Coarse fishes:" << std::endl;
     std::cout << std::endl;
     if(longestCoarse != nullptr){
-    std::cout <<"Longest: " << longestCoarse->at("name").get<std::string>() << " " <<  longestCoarse->at("length").get<double>() << " cm " << ",lure: " << longestCoarse->at("lure").get<std::string>();
+    std::cout <<"Longest: " << longestCoarse->at("name").get<std::string>() << " " <<  longestCoarse->at("length").get<double>() << " cm " << ",bait: " << longestCoarse->at("bait").get<std::string>();
     std::cout << " ,ground bait: " << longestCoarse->at("ground_bait").get<std::string>() << " ,date: " << coarseLongestDate << std::endl;
     }
 
     if(heaviestCoarse != nullptr){
-    std::cout <<"Heaviest: " << heaviestCoarse->at("name").get<std::string>() << " " << heaviestCoarse->at("weight").get<double>() << " kg " << ",lure: " << heaviestCoarse->at("lure").get<std::string>();
+    std::cout <<"Heaviest: " << heaviestCoarse->at("name").get<std::string>() << " " << heaviestCoarse->at("weight").get<double>() << " kg " << ",bait: " << heaviestCoarse->at("bait").get<std::string>();
     std::cout << " ,ground bait: " << heaviestCoarse->at("ground_bait").get<std::string>() << " ,date: " << coarseHeaviestDate << std::endl;
     } else {
         std::cout << "No record found." << std::endl;
@@ -541,12 +652,13 @@ void historyLog(){
 
     for(const auto& [dateKey, dateLog] : m_jsonData["log"].items()){
         std::cout << std::endl;
+        std::cout << dateLog.value("date","unknown") << std::endl;
         std::cout << std::left
         << std::setw(wIndex) << "Num"
         << std::setw(wName) << "Fish species"
         << std::setw(wLen) << "Length"
         << std::setw(wWeight) << "Weight"
-        << std::setw(wLure) << "Lure"
+        << std::setw(wLure) << "Bait"
         << "Ground Bait" << std::endl;
 
         std::cout << std::string(wIndex + wName + wLen + wWeight + wLure + wGround, '-') << std::endl;
@@ -557,17 +669,28 @@ void historyLog(){
             std::string formatedWeight = formatValue(fish.value("weight", 0.0), "kg");
 
             std::string groundBait = "-";
+            std::string bait = "-";
             if(fish.value("type", "unknown") == "Coarse_Fish"){
                 groundBait = fish.value("ground_bait","unknown");
+                bait = fish.value("bait","unknown");
+                std::cout << std::left
+                << std::setw(wIndex) << std::to_string(index) + "."
+                << std::setw(wName) << fish.value("name", "unknown")
+                << std::setw(wLen) << formatedLength
+                << std::setw(wWeight) << formatedWeight
+                << std::setw(wLure) << bait 
+                << groundBait << std::endl;
+            } else {
+                std::cout << std::left
+                << std::setw(wIndex) << std::to_string(index) + "."
+                << std::setw(wName) << fish.value("name", "unknown")
+                << std::setw(wLen) << formatedLength
+                << std::setw(wWeight) << formatedWeight
+                << std::setw(wLure) << fish.value("lure", "unknown") 
+                << groundBait << std::endl;
             }
         
-            std::cout << std::left
-            << std::setw(wIndex) << std::to_string(index) + "."
-            << std::setw(wName) << fish.value("name", "unknown")
-            << std::setw(wLen) << formatedLength
-            << std::setw(wWeight) << formatedWeight
-            << std::setw(wLure) << fish.value("lure", "unknown") 
-            << groundBait << std::endl;
+            
             
             index++;
         } 
