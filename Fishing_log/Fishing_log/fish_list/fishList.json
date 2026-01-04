@@ -1,0 +1,33 @@
+{
+    "Coarse_Fish": [
+        "carp",
+        "bream",
+        "tench",
+        "roach",
+        "crucian carp",
+        "grass carp",
+        "chub",
+        "ide",
+        "barbel",
+        "vimba",
+        "herring",
+        "sprat",
+        "sturgeon"
+    ],
+    "Predator": [
+        "pike",
+        "zander",
+        "perch",
+        "catfish",
+        "asp",
+        "brown trout",
+        "huchen",
+        "eel",
+        "salmon",
+        "sea trout",
+        "cod",
+        "flounder",
+        "garfish",
+        "turbot"
+    ]
+}
