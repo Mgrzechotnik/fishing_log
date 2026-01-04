@@ -1,0 +1,29 @@
+{
+    "log": {
+        "01-01-2026": {
+            "date": "01-01-2026",
+            "fishes": [],
+            "open_log_hour": 10,
+            "place": "pr",
+            "weather": "ws"
+        },
+        "02-01-2026": {
+            "date": "02-01-2026",
+            "fishes": [
+                {
+                    "bait": "haribo 10 mm",
+                    "ground_bait": "chleb z dzemem",
+                    "hour": 12,
+                    "id": 98950,
+                    "length": 40.0,
+                    "name": "carp",
+                    "type": "Coarse_Fish",
+                    "weight": 15.0
+                }
+            ],
+            "open_log_hour": 1,
+            "place": "a",
+            "weather": "g"
+        }
+    }
+}
