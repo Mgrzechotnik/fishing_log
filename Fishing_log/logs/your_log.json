@@ -24,6 +24,42 @@
             "open_log_hour": 1,
             "place": "a",
             "weather": "g"
+        },
+        "11-01-2026": {
+            "date": "11-01-2026",
+            "fishes": [
+                {
+                    "hour": 13,
+                    "id": 18170,
+                    "length": 65.5,
+                    "lure": "relax 8 cm",
+                    "name": "zander",
+                    "type": "Predator",
+                    "weight": 11.5
+                },
+                {
+                    "hour": 15,
+                    "id": 28081,
+                    "length": 72.6,
+                    "lure": "liver",
+                    "name": "eel",
+                    "type": "Predator",
+                    "weight": 2.65
+                },
+                {
+                    "bait": "corn",
+                    "ground_bait": "corn",
+                    "hour": 16,
+                    "id": 48542,
+                    "length": 3.0,
+                    "name": "grass carp",
+                    "type": "Coarse_Fish",
+                    "weight": 15.4
+                }
+            ],
+            "open_log_hour": 12,
+            "place": "przylasek nr 5",
+            "weather": "sunny and rainy"
         }
     }
 }

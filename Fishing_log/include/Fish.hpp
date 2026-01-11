@@ -1,11 +1,13 @@
 #pragma once
 #include <random>
-#include "FishBase.hpp"
+#include "CheckFish.hpp"
 
 namespace hk{
 
-class Fish : public FishBase {
+class Fish {
 protected:
+    std::string m_name;
+    std::string m_type;
     double m_weight;
     double m_length;
     int m_hour;
@@ -21,11 +23,12 @@ protected:
     ///Generate unique id for fishes
     ///The chance of get two the same id in one fishing session is nearly equal to 0
 
-    Fish(std::string name, double l, double w, int h) : FishBase(name), m_length(l > 0 ? l : 0.0), m_weight(w > 0 ? w : 0.0), m_hour((h >=0 && h<24) ? h : 0), m_id(generateId()){}
 
     ///Class for derived classes
 
 public:
+
+    Fish(std::string name, double l, double w, int h) : m_name(checkName(name)), m_type(checkType(name)), m_length(l > 0 ? l : 0.0), m_weight(w > 0 ? w : 0.0), m_hour((h >=0 && h<24) ? h : 0), m_id(generateId()){}
 
     virtual ~Fish() {}
 
@@ -71,6 +74,14 @@ public:
 
     int getId() const{
         return m_id;
+    }
+
+    const std::string getName(){
+        return m_name;
+    }
+
+    const std::string getType(){
+        return m_type;
     }
 
     bool operator==(const Fish& other) const {

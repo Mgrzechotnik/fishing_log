@@ -38,8 +38,12 @@ int main(){
             std::getline(ss, type);
                 if (type == "P"){
                     jsonFish["Predator"].push_back(name);
-                }else{
+                }else if (type == "C"){
                     jsonFish["Coarse_Fish"].push_back(name);
+                }
+                else {
+                    std::cout << "Fish: " << name << " unrecognized type: " << type << std::endl;
+                    std::cout << "Type must be P for predator, C for Corase_Fish" << std::endl << std::endl;
                 }
             
         }
@@ -47,6 +51,7 @@ int main(){
 
     std::ofstream jsonOut("./fishList.json");
     jsonOut << std::setw(4) << jsonFish;
+    std::cout << "Fishes saved to json file" << std::endl;
 
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cin.get();

@@ -309,13 +309,15 @@ public:
 
                         ///Check that get fish hour is bigger than started hour
 
-                        hk::FishBase fish(name);
+                        hk::Fish fish(name, length, weight, hour);
 
                         if(fish.getType() == "Predator"){
                             std::cout << "Enter lure: ";
                             std::getline(std::cin >> std::ws, lure);
                             hk::Predator predator(hour, name, length, weight, lure);
                             m_jsonData["log"][date]["fishes"].push_back(predator);
+                            std::cout << "Fish added, press enter to conitune " << std::endl;
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                         } else {
                             std::cout << "Enter bait: ";
                             std::getline(std::cin >> std::ws, bait);
@@ -323,6 +325,8 @@ public:
                             std::getline(std::cin >> std::ws, gb);
                             hk::CoarseFish coarse(name,length,weight,hour,bait,gb);
                             m_jsonData["log"][date]["fishes"].push_back(coarse);
+                            std::cout << "Fish added, press enter to conitune" << std::endl;
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                         }
                         }
  
