@@ -1,94 +1,80 @@
 #pragma once
+
 #include <random>
-#include "CheckFish.hpp"
+#include "checkName.hpp"
+#include "FishTypeProvider.hpp"
 
-namespace hk{
+namespace hk {
 
-class Fish {
-protected:
-    std::string m_name;
-    std::string m_type;
-    double m_weight;
-    double m_length;
-    int m_hour;
-    int m_id;
+    /**
+     * @brief Base class represents a fish object
+     * 
+     * Stores base parameters name,length,weight hour and unique id for the fish
+     * Serves as a base class for Predator and CoarseFish class
+     * 
+     */
 
-    int generateId(){
-        static std::random_device random;
-        static std::mt19937 gen(random());
-        static std::uniform_int_distribution<> dis(1, 99999);
-        return dis(gen);
-    }
+    class Fish {
+    protected:
+        std::string m_name;
+        std::string m_type;
+        double m_weight;
+        double m_length;
+        int m_hour;
+        int m_id;
 
-    ///Generate unique id for fishes
-    ///The chance of get two the same id in one fishing session is nearly equal to 0
+        /**
+         * @brief Generate unique id for fish
+         * 
+         * @return a randomly generated number between 1 and 99999
+         */
 
-
-    ///Class for derived classes
-
-public:
-
-    Fish(std::string name, double l, double w, int h) : m_name(checkName(name)), m_type(checkType(name)), m_length(l > 0 ? l : 0.0), m_weight(w > 0 ? w : 0.0), m_hour((h >=0 && h<24) ? h : 0), m_id(generateId()){}
-
-    virtual ~Fish() {}
-
-    virtual void showFish() const {
-        std::cout << "Fish species: " << m_name  << ", length: " << m_length << " cm " << ", weight: " << m_weight << " kg ";
-    }
-
-    
-
-    void setId(int id){
-        if(id > 0 && id <= 99999){
-            m_id = id;
-        }else {
-            std::cout << "Invalid id value" << std::endl;
+        int generateId() {
+            static std::random_device random;
+            static std::mt19937 gen(random());
+            static std::uniform_int_distribution<> dis(1, 99999);
+            return dis(gen);
         }
-    }
 
-    void setWeight(double new_weight) {
-        if (new_weight < 0){
-             m_weight = 0.0;
-             std::cout << "Invalid weight value" << std::endl;
-        } else {
-        m_weight = new_weight;
+        /**
+         * @brief Validated and coverts name to lowercase
+         * 
+         * @param name name provided by user to check is it correct
+         * @return name name of fish transformed to lower if its on fish list
+         */
+
+        static std::string fishNameCheck(std::string name) {
+
+            std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+            if (hk::FishTypeProvider::getFishType(name) != "unknown") {
+                return name;
+            }
+            return "unknown";
         }
-    }
 
-    void setLength(double new_length) {
-        if (new_length < 0) {
-            m_length = 0.0;
-            std::cout << "Invalid length value" << std::endl;
-        } else {
-            m_length = new_length;
+        /**
+         * @brief Constructor of fish
+         */
+        
+        Fish(std::string name, double l, double w, int h) : m_name(fishNameCheck(name)),
+                                                            m_type(hk::FishTypeProvider::getFishType(name)),
+                                                            m_length(l > 0 ? l : 0.0), m_weight(w > 0 ? w : 0.0),
+                                                            m_hour((h >= 0 && h < 24) ? h : 0), m_id(generateId()) {}
+
+    public:
+
+        /**
+         * @brief Virtual destructor of fish object
+         */
+
+        virtual ~Fish() {}
+
+        virtual void showFish() const {
+            std::cout << "Fish species: " << m_name << ", length: " << m_length << " cm " << ", weight: " << m_weight
+                      << " kg ";
         }
-    }
 
-    void setHour(int new_hour){
-        if(new_hour >= 0 && new_hour < 24){
-            m_hour = new_hour;
-        } else {
-            m_hour = 0;
-        }
-    }
 
-    int getId() const{
-        return m_id;
-    }
-
-    const std::string getName(){
-        return m_name;
-    }
-
-    const std::string getType(){
-        return m_type;
-    }
-
-    bool operator==(const Fish& other) const {
-        return this->m_id == other.m_id;
-    }
-
-};
+    };
 }
 
-///Base topology of fish. Fish receive unique Id, and base attributes
