@@ -95,6 +95,18 @@ namespace hk {
         }
 
         /**
+         * @brief Depent on system using other function 
+         */
+
+        void clear(){
+            #ifdef _WIN32
+                std::system("cls");
+            #else
+                std::system("clear");
+            #endif
+        }
+
+        /**
          * @brief validates user input loop
          * 
          * @tparam T the expected data type
@@ -157,7 +169,7 @@ namespace hk {
 
             while (true) {
 
-                system("cls");
+                clear();
                 std::cout << "Creating a new Log: " << std::endl;
                 std::cout << "To exit type 'exit'" << std::endl;
                 std::cout << "Enter date (dd-mm-yyy): ";
@@ -206,7 +218,7 @@ namespace hk {
                 std::cout << "Data saved to file." << std::endl;
                 std::cout << "To continue please press enter" << std::endl;
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                system("cls");
+                clear();
                 break;
 
             }
@@ -229,7 +241,7 @@ namespace hk {
             int count = 0;
             std::vector<std::string> dates;
 
-            system("cls");
+            clear();
 
             std::cout << "Editing existing log" << std::endl;
             std::cout << std::endl;
@@ -248,7 +260,7 @@ namespace hk {
 
             std::cin >> date;
 
-            system("cls");
+            clear();
 
             if (m_jsonData["log"].contains(date)) {
 
@@ -271,7 +283,7 @@ namespace hk {
 
                         while (true) {
 
-                            system("cls");
+                            clear();
 
                             std::cout << "Changing parameters of log date: " << date << std::endl;
                             std::cout << "Current open_log_hour is: " << m_jsonData["log"][date]["open_log_hour"]
@@ -354,7 +366,7 @@ namespace hk {
 
                         while (true) {
 
-                            system("cls");
+                            clear();
 
                             std::cout << "Adding fishes" << std::endl;
                             std::cout << std::endl;
@@ -449,7 +461,7 @@ namespace hk {
                         std::string newParam;
                         std::string newValue;
 
-                        system("cls");
+                        clear();
 
                         std::cin.clear();
 
@@ -481,7 +493,7 @@ namespace hk {
 
                         while (true) {
 
-                            system("cls");
+                            clear();
 
                             std::cout << "Fish ID: " << id << std::endl;
 
@@ -586,7 +598,7 @@ namespace hk {
 
                         while (true) {
 
-                            system("cls");
+                            clear();
 
                             std::cout << "Fishes catched at: " << date << std::endl;
 
@@ -652,7 +664,7 @@ namespace hk {
 
                         while (true) {
 
-                            system("cls");
+                            clear();
                             std::cout << "Editing log date" << std::endl << std::endl;
                             std::cout << "Current log date: " << date << std::endl;
                             std::cout << "Enter new log date,to exit type 'exit': ";
@@ -697,7 +709,7 @@ namespace hk {
                     default:
                         break;
                 }
-                system("cls");
+                clear();
             } else {
                 std::cout << "Log doesnt exist" << std::endl;
             }
@@ -716,7 +728,7 @@ namespace hk {
             int count = 0;
             std::vector<std::string> dates;
 
-            system("cls");
+            clear();
 
             std::cout << "Delete log" << std::endl;
             std::cout << "Last 5 log dates: " << std::endl;
@@ -733,7 +745,7 @@ namespace hk {
             std::cout << "Please enter a date to delete: ";
             std::cin >> date;
 
-            system("cls");
+            clear();
 
             if (m_jsonData["log"].contains(date)) {
                 std::cout << "Log exist" << std::endl;
@@ -786,7 +798,7 @@ namespace hk {
             std::string coarseHeaviestDate;
             std::string coarseLongestDate;
 
-            system("cls");
+            clear();
 
             std::cout << "Your personal records" << std::endl;
             std::cout << std::endl;
@@ -889,7 +901,7 @@ namespace hk {
             const int wGround = 25;
             const int wHour = 5;
 
-            system("cls");
+            clear();
 
             std::cout << "History of logs" << std::endl;
             std::cout << std::endl;
