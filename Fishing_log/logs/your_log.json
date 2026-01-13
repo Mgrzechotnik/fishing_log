@@ -1,0 +1,105 @@
+{
+    "log": {
+        "01-01-2026": {
+            "date": "01-01-2026",
+            "fishes": [
+                {
+                    "hour": 12,
+                    "id": 83726,
+                    "length": 105.5,
+                    "lure": "wobler",
+                    "name": "catfish",
+                    "type": "Predator",
+                    "weight": 23.0
+                },
+                {
+                    "bait": "czerowne robaki",
+                    "ground_bait": "chlebek",
+                    "hour": 17,
+                    "id": 70285,
+                    "length": 31.4,
+                    "name": "roach",
+                    "type": "Coarse_Fish",
+                    "weight": 1.52
+                },
+                {
+                    "bait": "haribo 6 mm",
+                    "ground_bait": "pellte 6 mm",
+                    "hour": 16,
+                    "id": 77601,
+                    "length": 89.0,
+                    "name": "grass carp",
+                    "type": "Coarse_Fish",
+                    "weight": 12.5
+                },
+                {
+                    "bait": "asd",
+                    "ground_bait": "as",
+                    "hour": 0,
+                    "id": 2127,
+                    "length": 41.0,
+                    "name": "carp",
+                    "type": "Coarse_Fish",
+                    "weight": 56.0
+                },
+                {
+                    "hour": 0,
+                    "id": 32542,
+                    "length": 12.0,
+                    "lure": "wafg",
+                    "name": "zander",
+                    "type": "Predator",
+                    "weight": 12.0
+                },
+                {
+                    "hour": 15,
+                    "id": 54752,
+                    "length": 43.0,
+                    "lure": "wobler",
+                    "name": "salmon",
+                    "type": "Predator",
+                    "weight": 12.0
+                }
+            ],
+            "open_log_hour": 10,
+            "place": "pr",
+            "weather": "ws"
+        },
+        "11-01-2026": {
+            "date": "11-01-2026",
+            "fishes": [
+                {
+                    "hour": 13,
+                    "id": 18170,
+                    "length": 65.5,
+                    "lure": "relax 8 cm",
+                    "name": "zander",
+                    "type": "Predator",
+                    "weight": 11.5
+                },
+                {
+                    "hour": 15,
+                    "id": 28081,
+                    "length": 72.6,
+                    "lure": "liver",
+                    "name": "eel",
+                    "type": "Predator",
+                    "weight": 2.65
+                },
+                {
+                    "bait": "corn",
+                    "ground_bait": "corn",
+                    "hour": 16,
+                    "id": 48542,
+                    "length": 3.0,
+                    "name": "grass carp",
+                    "type": "Coarse_Fish",
+                    "weight": 15.4
+                }
+            ],
+            "open_log_hour": 12,
+            "place": "przylasek nr 5",
+            "weather": "sunny and rainy"
+        }
+    }
+}
